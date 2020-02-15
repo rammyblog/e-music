@@ -1,0 +1,39 @@
+.controlBar {
+	position: relative;
+	display: flex;
+	box-sizing: border-box;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	height: 40px;
+	padding: 0 9px;
+	background-color: red !important;
+}
+
+audio,
+video {
+	display: inline-block;
+	/* background: darkblue !important; */
+	border-radius: 92px;
+	height: 90% !important;
+}
+
+.favNumber {
+	position: relative;
+	left: 94%;
+	bottom: 60px;
+	font-size: 1.3rem;
+	line-height: 0.8;
+	letter-spacing: 0.032em;
+	font-weight: 600 !important;
+	font-style: italic;
+}
+
+@media(max-width:500px) {
+	.Musicplayer-root-120 {
+		position: initial !important;
+		margin: 0 auto;
+		width: 100%;
+		min-width: 85% !important;
+	}
+}
