@@ -17,20 +17,23 @@ import "./musicPlayer.css";
 import 'react-toastify/dist/ReactToastify.css';
 
 class Musicplayer extends Component {
-    // state = {
-    //     playing: false
-    // }
+    state = {
+        songData: null
+    }
 
 
     componentDidMount() {
-        this.getMusicFromDB()
+        this.getMusicFromDB();
+
     }
 
     getMusicFromDB = () => {
 
         axios.get('http://127.0.0.1:8000/music/').then(res => {
 
-            console.log(res.data);
+            this.setState({
+                songData: res.data
+            })
 
         })
 
