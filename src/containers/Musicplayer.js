@@ -17,33 +17,12 @@ import "./musicPlayer.css";
 import 'react-toastify/dist/ReactToastify.css';
 
 class Musicplayer extends Component {
-    state = {
-        songData: null
-    }
 
 
-    componentDidMount() {
-        this.getMusicFromDB();
-
-    }
-
-    getMusicFromDB = () => {
-
-        axios.get('http://127.0.0.1:8000/music/').then(res => {
-
-            this.setState({
-                songData: res.data
-            })
-
-        })
-
-
-
-    }
 
     onPlay = () => {
 
-        toast.success('▶️ Playing !🎶', {
+        toast.success(`▶️ Playing  !🎶`, {
             position: "top-right",
             autoClose: 1300,
             hideProgressBar: false,
@@ -77,10 +56,13 @@ class Musicplayer extends Component {
 
     }
 
+    getSong = (name) => {
+        console.log(name);
+    }
+
+
     render() {
-        // const { playing } = this.state
-        const { classes } = this.props
-        const bull = <span className={classes.bullet}>•</span>
+        const { classes, song } = this.props;
 
         return (
             <Fragment>
@@ -88,7 +70,7 @@ class Musicplayer extends Component {
                     <CardContent>
                         <div style={{ height: "3em" }}>
                             <Typography variant="h4" color="primary" style={{ fontSize: '1.5rem' }}>
-                                Ojuelegba - <span>Wizkid</span>
+                                {song.title} - <span>{song.artist_name}</span>
                             </Typography>
                             <FavoriteBorderIcon
                                 fontSize="large"
@@ -106,7 +88,7 @@ class Musicplayer extends Component {
                         </div>
                         <div style={{ display: "flex" }}>
                             <ReactPlayer
-                                url="https://storage.googleapis.com/media-session/elephants-dream/the-wires.mp3"
+                                url={song.song}
                                 height="150"
                                 style={{
                                     display: "inline-block",
@@ -114,8 +96,27 @@ class Musicplayer extends Component {
                                     height: "100%"
                                 }}
                                 controls
-                                onPlay={this.onPlay}
-                                onPause={this.onPause}
+                                onPlay={() => {
+                                    toast.success(`▶️ Playing ${song.title} by ${song.artist_name} !🎶`, {
+                                        position: "top-right",
+                                        autoClose: 1300,
+                                        hideProgressBar: false,
+                                        closeOnClick: true,
+                                        pauseOnHover: true,
+                                        draggable: true
+                                    });
+                                }}
+                                onPause={() => {
+                                    toast.warning(`⏹️ Paused ${song.title} by ${song.artist_name}  !🎶`, {
+                                        position: "top-right",
+                                        autoClose: 1300,
+                                        hideProgressBar: false,
+                                        closeOnClick: true,
+                                        pauseOnHover: true,
+                                        draggable: true
+                                    });
+                                }
+                                }
                                 onEnded={this.onEnded}
 
                             />
@@ -123,11 +124,13 @@ class Musicplayer extends Component {
 
                         <Typography className={classes.pos} color="textSecondary">
                             Hip Hop
-            </Typography>
+                                    </Typography>
                     </CardContent>
                 </Card>
+
             </Fragment>
         )
+
     }
 }
 

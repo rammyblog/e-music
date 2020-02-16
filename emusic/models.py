@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Music(models.Model):
@@ -17,3 +18,20 @@ class Music(models.Model):
 
     def get_absolute_url(self):
         return reverse("Music_detail", kwargs={"pk": self.pk})
+
+
+class FavMusic(models.Model):
+
+    music = models.ForeignKey(Music, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    favourite = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = ("FavMusic")
+        verbose_name_plural = ("FavMusics")
+
+    def __str__(self):
+        return self.user.username
+
+    def get_absolute_url(self):
+        return reverse("FavMusic_detail", kwargs={"pk": self.pk})

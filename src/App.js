@@ -5,7 +5,7 @@ import BaseRouter from "./routes";
 import * as actions from "./store/actions/auth";
 import "semantic-ui-css/semantic.min.css";
 import CustomLayout from "./containers/Layout";
-import Musicplayer from "./containers/Musicplayer";
+import MusicCard from "./containers/MusicCard";
 import { toast } from 'react-toastify';
 
 
@@ -19,7 +19,7 @@ class App extends Component {
       <Router>
         <CustomLayout {...this.props} />
 
-        <Musicplayer />
+        <MusicCard />
         <BaseRouter />
 
       </Router>
