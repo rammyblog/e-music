@@ -10,21 +10,23 @@ import { Redirect, withRouter } from "react-router-dom";
 import "./musicPlayer.css";
 import "react-toastify/dist/ReactToastify.css";
 
-class MusicCard extends Component {
+class SearchResults extends Component {
     state = {
         songData: null,
         userFavorite: null,
-        songCount: null
+        songCount: null,
+        search_params: this.props.match.params.search_string
     };
 
     componentDidMount() {
         this.getMusicFromDB();
         this.getUserFavMusic();
+
     }
 
-    getFavouriteCount = (song_id) => {
-        // let  = this.props.song.id;
 
+
+    getFavouriteCount = (song_id) => {
         axios.get(`http://127.0.0.1:8000/favorite/music/${song_id}`).then(res => {
             this.setState({
                 songCount: res.data
@@ -32,24 +34,36 @@ class MusicCard extends Component {
             // return ({ song_id: res.data })
         }).catch(err => {
             console.log(err.response);
-
         });
     };
 
+    componentDidUpdate(prevProps) {
+
+        if (this.state.search_params != this.props.match.params.search_string) {
+            this.getMusicFromDB();
+            this.setState({
+                search_params: this.props.match.params.search_string
+            });
+        }
+
+    }
+
 
     getMusicFromDB = () => {
-        axios.get("http://127.0.0.1:8000/music/").then(res => {
-            console.log(res.data);
-
+        axios.get(`http://127.0.0.1:8000/music/?search=${this.props.match.params.search_string}`).then(res => {
             this.setState({
                 songData: res.data
             });
         });
     };
 
+
+
+
     static getDerivedStateFromProps(newProps, state) {
         const token = newProps.token || localStorage.getItem("token");
 
+        console.log(newProps);
         if (token) {
             axios.defaults.headers = {
                 "Content-Type": "application/json",
@@ -80,9 +94,6 @@ class MusicCard extends Component {
         }
         );
 
-        // return songID;
-
-
     };
 
 
@@ -95,6 +106,14 @@ class MusicCard extends Component {
                 {
                     userFavorite ?
                         <Fragment>
+
+                            <h2 className='text-class'>Displaying Search Results for "<span className='stylish-text'> {this.props.match.params.search_string} </span>"</h2>
+
+                            {
+                                songData.length <= 0 && songData ?
+                                    <h2 className='text-class'>{this.props.match.params.search_string} Not found</h2> : null
+                            }
+
                             {
                                 songData
                                     ? songData.map((item, _index) => {
@@ -130,5 +149,5 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default withRouter(
-    connect(mapStateToProps, mapDispatchToProps)(MusicCard)
+    connect(mapStateToProps, mapDispatchToProps)(SearchResults)
 );

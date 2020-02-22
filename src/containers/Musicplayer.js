@@ -7,21 +7,120 @@ import styles from "./MusicplayerStyles"
 import ReactPlayer from "react-player"
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"
 import FavoriteIcon from "@material-ui/icons/Favorite"
-import { toast } from 'react-toastify';
-import axios from 'axios';
-
-
+import { toast } from "react-toastify"
+import axios from "axios";
+import { connect } from "react-redux";
+import { logout } from "../store/actions/auth";
+import { withRouter } from 'react-router-dom';
 
 // CSS
-import "./musicPlayer.css";
-import 'react-toastify/dist/ReactToastify.css';
+import "./musicPlayer.css"
+import "react-toastify/dist/ReactToastify.css"
 
 class Musicplayer extends Component {
+
+    state = {
+        favSongArray: this.props.favSong,
+        favouriteSongCount: null,
+    }
+
+
+
+
+    getFavouriteCount = () => {
+        let song_id = this.props.song.id;
+
+        return axios.get(`http://127.0.0.1:8000/favorite/music/${song_id}`).then(res => {
+            return res.data
+
+
+            // return ({ song_id: res.data })
+        }).catch(err => {
+            console.log(err.response);
+
+        })
+    }
+
+    updateFavouriteSongCount = () => {
+        this.getFavouriteCount()
+            .then((res) => {
+                this.setState({
+                    favouriteSongCount: res
+                })
+
+            });
+    }
+
+
+
+
+
+    componentDidMount() {
+
+        this.updateFavouriteSongCount()
+
+    }
+
+
+
+
+
+
+
+    toggleFav = (id) => {
+
+
+
+        let tempFavSongArray = this.state.favSongArray.slice();
+        let favBoolean = tempFavSongArray.includes(id)
+        console.log(id);
+
+        this.makeFavourite(id, !favBoolean)
+
+
+        if (tempFavSongArray.includes(id)) {
+            tempFavSongArray.splice(tempFavSongArray.indexOf(id), 1)
+        } else {
+            tempFavSongArray.push(id)
+        }
+        this.setState(() => {
+            return {
+                favSongArray: tempFavSongArray
+            }
+        }, this.updateFavouriteSongCount())
+
+    }
+
+    static getDerivedStateFromProps(newProps, state) {
+        const token = newProps.token || localStorage.getItem("token")
+
+        if (token) {
+            axios.defaults.headers = {
+                "Content-Type": "application/json",
+                Authorization: "Token " + token
+            }
+        }
+
+        return null
+    }
+    makeFavourite = (song_id, favBoolean) => {
+        axios.post("http://127.0.0.1:8000/favorite/music/", {
+            favourite: favBoolean,
+            music: song_id
+        }).then(res => {
+            console.log(res.data)
+        }).catch(err => {
+            console.log(err.response);
+
+        })
+    }
+
+
+
 
 
 
     onPlay = () => {
-
         toast.success(`▶️ Playing  !🎶`, {
             position: "top-right",
             autoClose: 1300,
@@ -29,62 +128,98 @@ class Musicplayer extends Component {
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true
-        });
+        })
         // console.log("Playing")
     }
 
     onPause = () => {
-        toast.warning('⏹️ Paused !🎶', {
+        toast.warning("⏹️ Paused !🎶", {
             position: "top-right",
             autoClose: 1300,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true
-        });
+        })
     }
 
     onEnded = () => {
-        toast.error('⏹️ Stopped !🎶', {
+        toast.error("⏹️ Stopped !🎶", {
             position: "top-right",
             autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true
-        });
-
+        })
     }
 
-    getSong = (name) => {
-        console.log(name);
+    getSong = name => {
+        console.log(name)
     }
-
 
     render() {
-        const { classes, song } = this.props;
+        const { classes, song, favSong, counts } = this.props
+        const { favSongArray, favouriteSongCount } = this.state
+
+        if (favouriteSongCount) {
+
+            console.log(favouriteSongCount);
+
+
+        }
+
+        // console.log(favouriteSongCount);
+
+
 
         return (
             <Fragment>
+
                 <Card className={`${classes.root} fullscreen`}>
                     <CardContent>
                         <div style={{ height: "3em" }}>
-                            <Typography variant="h4" color="primary" style={{ fontSize: '1.5rem' }}>
+                            <Typography
+                                variant="h4"
+                                color="primary"
+                                style={{ fontSize: "1.5rem" }}
+                            >
                                 {song.title} - <span>{song.artist_name}</span>
                             </Typography>
-                            <FavoriteBorderIcon
-                                fontSize="large"
-                                color="primary"
 
-                                style={{
-                                    margin: "5px 5px",
-                                    position: "relative",
-                                    bottom: "50px",
-                                    left: "92%"
-                                }}
-                            />
+                            <div onClick={() => this.toggleFav(song.id)}>
+                                {favSongArray.includes(song.id) ? (
+                                    <FavoriteIcon
+                                        fontSize="large"
+                                        color="primary"
+                                        style={{
+                                            margin: "5px 5px",
+                                            position: "relative",
+                                            bottom: "50px",
+                                            left: "92%"
+                                        }}
+                                    />
+                                ) : (
+                                        <FavoriteBorderIcon
+                                            fontSize="large"
+                                            color="primary"
+                                            style={{
+                                                margin: "5px 5px",
+                                                position: "relative",
+                                                bottom: "50px",
+                                                left: "92%"
+                                            }}
+                                        />
+                                    )}
+                            </div>
 
-                            <Typography className='favNumber' color='inherit'>5</Typography>
+                            <Typography className="favNumber" color="inherit">
+                                {
+                                    favouriteSongCount ? favouriteSongCount : 0
+                                }
+
+
+                            </Typography>
                         </div>
                         <div style={{ display: "flex" }}>
                             <ReactPlayer
@@ -97,41 +232,57 @@ class Musicplayer extends Component {
                                 }}
                                 controls
                                 onPlay={() => {
-                                    toast.success(`▶️ Playing ${song.title} by ${song.artist_name} !🎶`, {
-                                        position: "top-right",
-                                        autoClose: 1300,
-                                        hideProgressBar: false,
-                                        closeOnClick: true,
-                                        pauseOnHover: true,
-                                        draggable: true
-                                    });
+                                    toast.success(
+                                        `▶️ Playing ${song.title} by ${song.artist_name} !🎶`,
+                                        {
+                                            position: "top-right",
+                                            autoClose: 1300,
+                                            hideProgressBar: false,
+                                            closeOnClick: true,
+                                            pauseOnHover: true,
+                                            draggable: true
+                                        }
+                                    )
                                 }}
                                 onPause={() => {
-                                    toast.warning(`⏹️ Paused ${song.title} by ${song.artist_name}  !🎶`, {
-                                        position: "top-right",
-                                        autoClose: 1300,
-                                        hideProgressBar: false,
-                                        closeOnClick: true,
-                                        pauseOnHover: true,
-                                        draggable: true
-                                    });
-                                }
-                                }
+                                    toast.warning(
+                                        `⏹️ Paused ${song.title} by ${song.artist_name}  !🎶`,
+                                        {
+                                            position: "top-right",
+                                            autoClose: 1300,
+                                            hideProgressBar: false,
+                                            closeOnClick: true,
+                                            pauseOnHover: true,
+                                            draggable: true
+                                        }
+                                    )
+                                }}
                                 onEnded={this.onEnded}
-
                             />
                         </div>
 
                         <Typography className={classes.pos} color="textSecondary">
                             Hip Hop
-                                    </Typography>
+            </Typography>
                     </CardContent>
                 </Card>
 
             </Fragment>
         )
-
     }
 }
 
-export default withStyles(styles)(Musicplayer)
+const mapStateToProps = state => {
+    return {
+
+        authenticated: state.auth.token !== null
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        logout: () => dispatch(logout())
+    };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Musicplayer)));

@@ -18,6 +18,26 @@ video {
 	height: 90% !important;
 }
 
+
+.text-class {
+
+	font-size: 30px;
+	font-weight: 600;
+	font-style: normal;
+	text-align: center !important;
+	color: #3f51b5;
+	text-transform: uppercase;
+
+
+}
+
+.stylish-text {
+	font-style: italic;
+	line-height: 0;
+	font-size: 34px;
+	font-weight: 400;
+}
+
 .favNumber {
 	position: relative;
 	left: 94%;

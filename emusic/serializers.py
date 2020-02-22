@@ -1,5 +1,5 @@
 import os
-from .models import Music
+from .models import Music, FavMusic
 from rest_framework import serializers
 from django.utils import timezone
 
@@ -16,7 +16,7 @@ class MusicSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Music
-        fields = ['pk', 'title', 'artist_name', 'song', 'genre']
+        fields = ['id', 'title', 'artist_name', 'song', 'genre']
 
     def validate_song(self, value):
         file = value
@@ -30,6 +30,13 @@ class MusicSerializer(serializers.ModelSerializer):
             return file
         else:
             raise serializers.ValidationError('Not a valid audio file')
+
+
+class FavouriteMusicSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = FavMusic
+        fields = ['song']
 
 
 class RegisterSerializer(serializers.Serializer):

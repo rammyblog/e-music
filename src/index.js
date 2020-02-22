@@ -14,7 +14,7 @@ const rootReducer = combineReducers({
   auth: authReducer
 });
 
-const store = createStore(rootReducer, composeEnhances(applyMiddleware(thunk)));
+export const store = createStore(rootReducer, composeEnhances(applyMiddleware(thunk)));
 
 const app = (
   <Provider store={store}>

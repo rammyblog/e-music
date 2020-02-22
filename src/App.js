@@ -3,10 +3,12 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { connect } from "react-redux";
 import BaseRouter from "./routes";
 import * as actions from "./store/actions/auth";
-import "semantic-ui-css/semantic.min.css";
-import CustomLayout from "./containers/Layout";
-import MusicCard from "./containers/MusicCard";
 import { toast } from 'react-toastify';
+import CustomLayout from "./containers/Layout";
+
+
+// CSS
+import './App.css';
 
 
 class App extends Component {
@@ -14,14 +16,11 @@ class App extends Component {
     this.props.onTryAutoSignup();
   }
   render() {
-    toast.configure()
+    toast.configure();
     return (
       <Router>
-        <CustomLayout {...this.props} />
-
-        <MusicCard />
+        <CustomLayout />
         <BaseRouter />
-
       </Router>
     );
   }

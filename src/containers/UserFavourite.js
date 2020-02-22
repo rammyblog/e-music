@@ -10,7 +10,7 @@ import { Redirect, withRouter } from "react-router-dom";
 import "./musicPlayer.css";
 import "react-toastify/dist/ReactToastify.css";
 
-class MusicCard extends Component {
+class UserFavorite extends Component {
     state = {
         songData: null,
         userFavorite: null,
@@ -22,6 +22,7 @@ class MusicCard extends Component {
         this.getUserFavMusic();
     }
 
+
     getFavouriteCount = (song_id) => {
         // let  = this.props.song.id;
 
@@ -32,13 +33,12 @@ class MusicCard extends Component {
             // return ({ song_id: res.data })
         }).catch(err => {
             console.log(err.response);
-
         });
     };
 
 
     getMusicFromDB = () => {
-        axios.get("http://127.0.0.1:8000/music/").then(res => {
+        axios.get("http://127.0.0.1:8000/favorite/music/list").then(res => {
             console.log(res.data);
 
             this.setState({
@@ -95,6 +95,13 @@ class MusicCard extends Component {
                 {
                     userFavorite ?
                         <Fragment>
+                            <h2 className='text-class'>Your favorite songs</h2>
+
+                            {
+                                songData.length <= 0 ?
+                                    <h2 className='text-class'>You have 0 favorite songs</h2> : null
+                            }
+
                             {
                                 songData
                                     ? songData.map((item, _index) => {
@@ -130,5 +137,5 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default withRouter(
-    connect(mapStateToProps, mapDispatchToProps)(MusicCard)
+    connect(mapStateToProps, mapDispatchToProps)(UserFavorite)
 );

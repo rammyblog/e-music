@@ -14,10 +14,12 @@ export const authSuccess = token => {
   };
 };
 
-export const authFail = error => {
+export const authFail = (error, response) => {
   return {
     type: actionTypes.AUTH_FAIL,
-    error: error
+    error: error,
+    response: response,
+    token: ''
   };
 };
 
@@ -38,9 +40,9 @@ export const checkAuthTimeout = expirationTime => {
 };
 
 export const authLogin = (username, password) => {
-  return dispatch => {
+  return async (dispatch) => {
     dispatch(authStart());
-    axios
+    await axios
       .post("http://127.0.0.1:8000/rest-auth/login/", {
         username: username,
         password: password
@@ -53,11 +55,18 @@ export const authLogin = (username, password) => {
         dispatch(authSuccess(token));
         dispatch(checkAuthTimeout(3600));
       })
-      .catch(err => {
-        dispatch(authFail(err));
+      .catch((err) => {
+
+
+        dispatch(authFail(err, err.response))
       });
   };
 };
+
+
+
+
+
 
 export const authSignup = (username, email, password1, password2) => {
   return dispatch => {
@@ -84,7 +93,7 @@ export const authSignup = (username, email, password1, password2) => {
 };
 
 export const authCheckState = () => {
-  return dispatch => {
+  return async (dispatch) => {
     const token = localStorage.getItem("token");
     if (token === undefined) {
       dispatch(logout());

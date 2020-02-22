@@ -21,8 +21,8 @@ class Music(models.Model):
 
 
 class FavMusic(models.Model):
-
-    music = models.ForeignKey(Music, on_delete=models.CASCADE)
+    song = models.ForeignKey(Music, related_name='music_list',
+                             on_delete=models.CASCADE, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     favourite = models.BooleanField(default=False)
 
