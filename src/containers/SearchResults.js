@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from "react";
 import axios from "axios";
 import Musicplayer from "./Musicplayer";
-import CustomLayout from "./Layout";
 import { connect } from "react-redux";
 import { logout } from "../store/actions/auth";
-import { Redirect, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 // CSS
 import "./musicPlayer.css";
@@ -19,11 +18,12 @@ class SearchResults extends Component {
     };
 
     componentDidMount() {
-        this.getMusicFromDB();
-        this.getUserFavMusic();
+        if (this.props.authenticated) {
+            this.getMusicFromDB();
+            this.getUserFavMusic();
+        }
 
     }
-
 
 
     getFavouriteCount = (song_id) => {
@@ -39,7 +39,7 @@ class SearchResults extends Component {
 
     componentDidUpdate(prevProps) {
 
-        if (this.state.search_params != this.props.match.params.search_string) {
+        if (this.state.search_params !== this.props.match.params.search_string) {
             this.getMusicFromDB();
             this.setState({
                 search_params: this.props.match.params.search_string
@@ -100,33 +100,41 @@ class SearchResults extends Component {
 
     render() {
         const { songData, userFavorite } = this.state;
+        const token = localStorage.getItem("token");
+        const authenticated = this.props.authenticated;
 
         return (
             <Fragment>
                 {
-                    userFavorite ?
+                    authenticated || token ?
+
                         <Fragment>
 
-                            <h2 className='text-class'>Displaying Search Results for "<span className='stylish-text'> {this.props.match.params.search_string} </span>"</h2>
-
                             {
-                                songData.length <= 0 && songData ?
-                                    <h2 className='text-class'>{this.props.match.params.search_string} Not found</h2> : null
-                            }
+                                userFavorite ?
+                                    <Fragment>
 
-                            {
-                                songData
-                                    ? songData.map((item, _index) => {
-                                        return <Musicplayer
-                                            song={item}
-                                            favSong={userFavorite}
-                                            key={_index} />;
-                                    })
+                                        <h2 className='text-class'>Displaying Search Results for "<span className='stylish-text'> {this.props.match.params.search_string} </span>"</h2>
+
+                                        {
+                                            songData.length <= 0 && songData ?
+                                                <h2 className='text-class'>{this.props.match.params.search_string} Not found</h2> : null
+                                        }
+
+                                        {
+                                            songData
+                                                ? songData.map((item, _index) => {
+                                                    return <Musicplayer
+                                                        song={item}
+                                                        favSong={userFavorite}
+                                                        key={_index} />;
+                                                })
+                                                : null
+                                        }
+                                    </Fragment >
                                     : null
                             }
-                        </Fragment >
-                        : null
-                }
+                        </Fragment> : this.props.history.push('/login/')}
             </Fragment>
         );
 

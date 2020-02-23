@@ -13,7 +13,13 @@ import './App.css';
 
 class App extends Component {
   componentDidMount() {
-    this.props.onTryAutoSignup();
+
+
+    if (!this.props.onTryAutoSignup()) {
+
+      this.props.history.push('/login/');
+
+    }
   }
   render() {
     toast.configure();

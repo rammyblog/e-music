@@ -1,4 +1,4 @@
-import { fade, withStyles } from '@material-ui/core/styles';
+import { fade } from '@material-ui/core/styles';
 const styles = theme => ({
     root: {
         display: 'flex',
@@ -9,6 +9,8 @@ const styles = theme => ({
     },
     title: {
         flexGrow: 1,
+        margin: 10,
+        cursor: 'pointer'
     },
     hide: {
         display: 'none',

@@ -13,6 +13,6 @@ const styles = theme => ({
     pos: {
         marginBottom: 12
     }
-})
+});
 
-export default styles
+export default styles;

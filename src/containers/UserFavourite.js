@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from "react";
 import axios from "axios";
 import Musicplayer from "./Musicplayer";
-import CustomLayout from "./Layout";
 import { connect } from "react-redux";
 import { logout } from "../store/actions/auth";
-import { Redirect, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 // CSS
 import "./musicPlayer.css";
@@ -15,36 +14,6 @@ class UserFavorite extends Component {
         songData: null,
         userFavorite: null,
         songCount: null
-    };
-
-    componentDidMount() {
-        this.getMusicFromDB();
-        this.getUserFavMusic();
-    }
-
-
-    getFavouriteCount = (song_id) => {
-        // let  = this.props.song.id;
-
-        axios.get(`http://127.0.0.1:8000/favorite/music/${song_id}`).then(res => {
-            this.setState({
-                songCount: res.data
-            });
-            // return ({ song_id: res.data })
-        }).catch(err => {
-            console.log(err.response);
-        });
-    };
-
-
-    getMusicFromDB = () => {
-        axios.get("http://127.0.0.1:8000/favorite/music/list").then(res => {
-            console.log(res.data);
-
-            this.setState({
-                songData: res.data
-            });
-        });
     };
 
     static getDerivedStateFromProps(newProps, state) {
@@ -60,6 +29,39 @@ class UserFavorite extends Component {
         return null;
     }
 
+    componentDidMount() {
+        if (this.props.authenticated) {
+            this.getMusicFromDB();
+            this.getUserFavMusic();
+        }
+
+    }
+
+
+    getFavouriteCount = (song_id) => {
+        axios.get(`http://127.0.0.1:8000/favorite/music/${song_id}`).then(res => {
+            this.setState({
+                songCount: res.data
+            });
+            // return ({ song_id: res.data })
+        }).catch(err => {
+            console.log(err);
+        });
+    };
+
+
+    getMusicFromDB = () => {
+        axios.get("http://127.0.0.1:8000/favorite/music/list").then(res => {
+            console.log(res.data);
+
+            this.setState({
+                songData: res.data
+            });
+        }).catch(err => {
+            console.log(err);
+        });
+    };
+
 
 
 
@@ -74,46 +76,58 @@ class UserFavorite extends Component {
                 userFavorite: songID.flat()
             });
         }).catch((err) => {
+            console.log(err);
+
             if (err.response.status === 500) {
                 this.props.history.push('/login/');
             }
         }
         );
-
-        // return songID;
-
-
     };
 
 
 
     render() {
         const { songData, userFavorite } = this.state;
+        const token = localStorage.getItem("token");
+        const authenticated = this.props.authenticated;
+
 
         return (
             <Fragment>
                 {
-                    userFavorite ?
+                    authenticated || token ?
+
                         <Fragment>
-                            <h2 className='text-class'>Your favorite songs</h2>
+
 
                             {
-                                songData.length <= 0 ?
-                                    <h2 className='text-class'>You have 0 favorite songs</h2> : null
-                            }
+                                userFavorite ?
+                                    <Fragment>
+                                        <h2 className='text-class'>Your favorite songs</h2>
 
-                            {
-                                songData
-                                    ? songData.map((item, _index) => {
-                                        return <Musicplayer
-                                            song={item}
-                                            favSong={userFavorite}
-                                            key={_index} />;
-                                    })
+                                        {
+                                            songData && songData.length <= 0 ?
+                                                <h2 className='text-class'>You have 0 favorite songs</h2> : null
+                                        }
+
+                                        {
+                                            songData
+                                                ? songData.map((item, _index) => {
+                                                    return <Musicplayer
+                                                        song={item}
+                                                        favSong={userFavorite}
+                                                        key={_index} />;
+                                                })
+                                                : null
+                                        }
+                                    </Fragment >
                                     : null
                             }
-                        </Fragment >
-                        : null
+
+                        </Fragment>
+
+                        : this.props.history.push('/login/')
                 }
             </Fragment>
         );

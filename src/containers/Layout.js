@@ -1,19 +1,19 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from "../store/actions/auth";
-import { fade, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import styles from './LayoutStyles';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
-import { Redirect } from 'react-router-dom';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+
+
+
 
 
 class CustomLayout extends React.Component {
@@ -23,9 +23,6 @@ class CustomLayout extends React.Component {
     let raw_search_value = e.target.search.value;
     let search_string = this.convertSpacesToPlus(raw_search_value);
     this.props.history.push(`/search/${search_string}`);
-    // <Redirect to='l' />;
-    // < Redirect to={{ pathname: '/search', state: { search_string: { search_string } } } />
-
     e.preventDefault();
   };
 
@@ -36,7 +33,8 @@ class CustomLayout extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { authenticated } = this.props;
+    const token = localStorage.getItem("token");
+    const authenticated = this.props.authenticated;
 
 
     return (
@@ -44,37 +42,46 @@ class CustomLayout extends React.Component {
         <AppBar position="static">
           <Toolbar>
 
-            <Typography variant="h6" className={classes.title}>
-              <Link to='/dashboard'>
-                E-music
-              </Link>
-            </Typography>
+            <Link to='/'>
+              <img className={classes.title} src={`https://res.cloudinary.com/rammy/image/upload/c_scale,w_50/v1582484696/S_h1rmoJk8bzhRZ8oeGqg0vpGvP_7nwnbaZ1p9a_e8GuNevYzlpEYLg4rIhWeYabHkD7au5Vk1RPdzLEkmXTT9dvVgOCgLxck1UJUk3LDbSPx_BjX-wPlpuPmkUgCqL4n2663FdDBWEdpkAo_yu3fPP69efMhr0.png`} alt='home-logo' />
+            </Link>
 
-            <Typography variant="h6">
-              Favourite
-          </Typography>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <form onSubmit={this.handleSubmit} >
-                <InputBase
+            {
+              authenticated || token ?
 
-                  name='search'
+                <Fragment>
 
-                  placeholder="Search…"
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                  }}
-                  inputProps={{ 'aria-label': 'search' }}
-                />
-              </form>
-            </div>
+                  <div className={classes.search}>
+                    <div className={classes.searchIcon}>
+                      <SearchIcon />
+                    </div>
+                    <form onSubmit={this.handleSubmit} >
+                      <InputBase
+
+                        name='search'
+
+                        placeholder="Search…"
+                        classes={{
+                          root: classes.inputRoot,
+                          input: classes.inputInput,
+                        }}
+                        inputProps={{ 'aria-label': 'search' }}
+                      />
+                    </form>
+                  </div>
 
 
-            <CloudUploadIcon color='inherit' />
-            {/* <Button color="inherit">Upload</Button> */}
+
+                  <FavoriteIcon className={classes.title} onClick={() => this.props.history.push('/favourite_songs/')} />
+                  <PowerSettingsNewIcon color='inherit' onClick={this.props.logout} />
+
+                </Fragment>
+
+                : null
+
+            }
+
+
           </Toolbar>
         </AppBar>
 

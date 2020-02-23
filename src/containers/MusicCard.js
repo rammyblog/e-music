@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from "react";
 import axios from "axios";
 import Musicplayer from "./Musicplayer";
-import CustomLayout from "./Layout";
 import { connect } from "react-redux";
 import { logout } from "../store/actions/auth";
-import { Redirect, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 // CSS
 import "./musicPlayer.css";
@@ -23,13 +22,12 @@ class MusicCard extends Component {
     }
 
     getFavouriteCount = (song_id) => {
-        // let  = this.props.song.id;
+
 
         axios.get(`http://127.0.0.1:8000/favorite/music/${song_id}`).then(res => {
             this.setState({
                 songCount: res.data
             });
-            // return ({ song_id: res.data })
         }).catch(err => {
             console.log(err.response);
 
@@ -39,7 +37,6 @@ class MusicCard extends Component {
 
     getMusicFromDB = () => {
         axios.get("http://127.0.0.1:8000/music/").then(res => {
-            console.log(res.data);
 
             this.setState({
                 songData: res.data
@@ -65,7 +62,7 @@ class MusicCard extends Component {
 
     getUserFavMusic = () => {
         axios.get("http://127.0.0.1:8000/get/favorite/music/").then(res => {
-            // console.log(Object.values(res.data))
+
             let songID = res.data.map(song => {
                 return Object.values(song);
             });
@@ -89,26 +86,35 @@ class MusicCard extends Component {
 
     render() {
         const { songData, userFavorite } = this.state;
+        const token = localStorage.getItem("token");
+        const authenticated = this.props.authenticated;
 
         return (
             <Fragment>
+
                 {
-                    userFavorite ?
+                    authenticated || token ?
                         <Fragment>
                             {
-                                songData
-                                    ? songData.map((item, _index) => {
-                                        return <Musicplayer
-                                            song={item}
-                                            favSong={userFavorite}
-                                            key={_index} />;
-                                    })
+                                userFavorite ?
+                                    <Fragment>
+                                        {
+                                            songData
+                                                ? songData.map((item, _index) => {
+                                                    return <Musicplayer
+                                                        song={item}
+                                                        favSong={userFavorite}
+                                                        key={_index} />;
+                                                })
+                                                : null
+                                        }
+                                    </Fragment >
                                     : null
-                            }
-                        </Fragment >
-                        : null
+                            }</Fragment>
+
+                        : this.props.history.push('/login/')
                 }
-            </Fragment>
+            </Fragment >
         );
 
 
