@@ -40,20 +40,6 @@ MIDDLEWARE = [
 ALLOWED_HOSTS += ['127.0.0.1']
 DEBUG = True
 
-WSGI_APPLICATION = 'home.wsgi.dev.application'
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-# CORS_ORIGIN_WHITELIST = (
-#     'http://localhost:3000',
-# )
-
-WSGI_APPLICATION = 'home.wsgi.dev.application'
 
 DATABASES = {
     'default': {
@@ -96,6 +82,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'build/static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 SITE_ID = 1
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 REST_FRAMEWORK = {
@@ -107,6 +94,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
+
 
 ACCOUNT_EMAIL_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
