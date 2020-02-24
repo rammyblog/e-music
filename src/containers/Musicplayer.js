@@ -27,7 +27,7 @@ class Musicplayer extends Component {
         let song_id = this.props.song.id;
 
         return axios
-            .get(`https://react-emusic.herokuapp.com/favorite/music/${song_id}`)
+            .get(`https://react-emusic.herokuapp.com/api/favorite/music/${song_id}`)
             .then(res => {
                 return res.data;
 
@@ -82,7 +82,7 @@ class Musicplayer extends Component {
     }
     makeFavourite = (song_id, favBoolean) => {
         axios
-            .post("https://react-emusic.herokuapp.com/favorite/music/", {
+            .post("https://react-emusic.herokuapp.com/api/favorite/music/", {
                 favourite: favBoolean,
                 music: song_id
             })

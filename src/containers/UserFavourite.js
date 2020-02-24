@@ -39,7 +39,7 @@ class UserFavorite extends Component {
 
 
     getFavouriteCount = (song_id) => {
-        axios.get(`https://react-emusic.herokuapp.com/favorite/music/${song_id}`).then(res => {
+        axios.get(`https://react-emusic.herokuapp.com/api/favorite/music/${song_id}`).then(res => {
             this.setState({
                 songCount: res.data
             });
@@ -51,7 +51,7 @@ class UserFavorite extends Component {
 
 
     getMusicFromDB = () => {
-        axios.get("https://react-emusic.herokuapp.com/favorite/music/list").then(res => {
+        axios.get("https://react-emusic.herokuapp.com/api/favorite/music/list").then(res => {
             console.log(res.data);
 
             this.setState({
@@ -66,7 +66,7 @@ class UserFavorite extends Component {
 
 
     getUserFavMusic = () => {
-        axios.get("https://react-emusic.herokuapp.com/get/favorite/music/").then(res => {
+        axios.get("https://react-emusic.herokuapp.com/api/get/favorite/music/").then(res => {
             // console.log(Object.values(res.data))
             let songID = res.data.map(song => {
                 return Object.values(song);
