@@ -7,3 +7,4 @@ build
 static
 package-lock.json
 media
+node_modules
