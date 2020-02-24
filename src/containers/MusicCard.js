@@ -24,7 +24,7 @@ class MusicCard extends Component {
     getFavouriteCount = (song_id) => {
 
 
-        axios.get(`http://127.0.0.1:8000/favorite/music/${song_id}`).then(res => {
+        axios.get(`https://react-emusic.herokuapp.com/favorite/music/${song_id}`).then(res => {
             this.setState({
                 songCount: res.data
             });
@@ -36,7 +36,7 @@ class MusicCard extends Component {
 
 
     getMusicFromDB = () => {
-        axios.get("http://127.0.0.1:8000/music/").then(res => {
+        axios.get("https://react-emusic.herokuapp.com/music/").then(res => {
 
             this.setState({
                 songData: res.data
@@ -61,7 +61,7 @@ class MusicCard extends Component {
 
 
     getUserFavMusic = () => {
-        axios.get("http://127.0.0.1:8000/get/favorite/music/").then(res => {
+        axios.get("https://react-emusic.herokuapp.com/get/favorite/music/").then(res => {
 
             let songID = res.data.map(song => {
                 return Object.values(song);

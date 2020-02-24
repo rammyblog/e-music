@@ -43,7 +43,7 @@ export const authLogin = (username, password) => {
   return async (dispatch) => {
     dispatch(authStart());
     await axios
-      .post("http://127.0.0.1:8000/rest-auth/login/", {
+      .post("https://react-emusic.herokuapp.com/rest-auth/login/", {
         username: username,
         password: password
       })
@@ -58,7 +58,7 @@ export const authLogin = (username, password) => {
       .catch((err) => {
 
 
-        dispatch(authFail(err, err.response))
+        dispatch(authFail(err, err.response));
       });
   };
 };
@@ -72,7 +72,7 @@ export const authSignup = (username, email, password1, password2) => {
   return dispatch => {
     dispatch(authStart());
     axios
-      .post("http://127.0.0.1:8000/rest-auth/registration/", {
+      .post("https://react-emusic.herokuapp.com/rest-auth/registration/", {
         username: username,
         email: email,
         password1: password1,
