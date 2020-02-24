@@ -100,3 +100,14 @@ ACCOUNT_EMAIL_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 WSGI_APPLICATION = 'home.wsgi.dev.application'
+
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'emusic.serializers.RegisterSerializer',
+    'PASSWORD_RESET_SERIALIZER': 'emusic.serializers.PasswordResetSerializer'
+}
+
+
+if 'DATABASE_URL' in os.environ:
+    import dj_database_url
+    DATABASES = {'default': dj_database_url.config()}
