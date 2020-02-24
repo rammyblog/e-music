@@ -8,21 +8,21 @@ ALLOWED_HOSTS = ['react-emusic.herokuapp.com', '127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'django.contrib.sites',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
+    'rest_framework',
     'emusic',
+    'corsheaders',
+    'rest_framework.authtoken',
+    'rest_auth',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
-    'corsheaders',
-    'rest_auth',
     'rest_auth.registration',
-    'rest_framework',
-    'rest_framework.authtoken',
+    'widget_tweaks',
 
 ]
 
