@@ -11,6 +11,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+import { Typography } from "@material-ui/core";
 
 
 
@@ -42,9 +43,14 @@ class CustomLayout extends React.Component {
         <AppBar position="static">
           <Toolbar>
 
-            <Link to='/'>
-              <img className={classes.title} src={`https://res.cloudinary.com/rammy/image/upload/c_scale,w_50/v1582484696/S_h1rmoJk8bzhRZ8oeGqg0vpGvP_7nwnbaZ1p9a_e8GuNevYzlpEYLg4rIhWeYabHkD7au5Vk1RPdzLEkmXTT9dvVgOCgLxck1UJUk3LDbSPx_BjX-wPlpuPmkUgCqL4n2663FdDBWEdpkAo_yu3fPP69efMhr0.png`} alt='home-logo' />
-            </Link>
+
+            <Typography variant="h6" className={classes.title}>
+              <Link to='/'>
+                <img className={classes.title} src={`https://res.cloudinary.com/rammy/image/upload/c_scale,w_50/v1582484696/S_h1rmoJk8bzhRZ8oeGqg0vpGvP_7nwnbaZ1p9a_e8GuNevYzlpEYLg4rIhWeYabHkD7au5Vk1RPdzLEkmXTT9dvVgOCgLxck1UJUk3LDbSPx_BjX-wPlpuPmkUgCqL4n2663FdDBWEdpkAo_yu3fPP69efMhr0.png`} alt='home-logo' />
+
+              </Link>
+            </Typography>
+
 
             {
               authenticated || token ?
@@ -72,8 +78,8 @@ class CustomLayout extends React.Component {
 
 
 
-                  <FavoriteIcon className={classes.title} onClick={() => this.props.history.push('/favourite_songs/')} />
-                  <PowerSettingsNewIcon color='inherit' onClick={this.props.logout} />
+                  <FavoriteIcon className={classes.marginCursor} onClick={() => this.props.history.push('/favourite_songs/')} />
+                  <PowerSettingsNewIcon color='inherit' className={classes.marginCursor} onClick={this.props.logout} />
 
                 </Fragment>
 
@@ -85,7 +91,7 @@ class CustomLayout extends React.Component {
           </Toolbar>
         </AppBar>
 
-      </div>
+      </div >
     );
   }
 }

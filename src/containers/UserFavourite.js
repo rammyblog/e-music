@@ -52,9 +52,9 @@ class UserFavorite extends Component {
 
     getMusicFromDB = () => {
         axios.get("https://react-emusic.herokuapp.com/api/favorite/music/list").then(res => {
-            console.log(res.data);
 
             this.setState({
+
                 songData: res.data
             });
         }).catch(err => {

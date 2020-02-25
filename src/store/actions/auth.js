@@ -64,33 +64,33 @@ export const authLogin = (username, password) => {
 };
 
 
-
-
-
-
-export const authSignup = (username, email, password1, password2) => {
-  return dispatch => {
+export const authSignup = (firstname, lastname, username, email, password1, password2) => {
+  return async (dispatch) => {
     dispatch(authStart());
-    axios
-      .post("https://react-emusic.herokuapp.com/rest-auth/registration/", {
-        username: username,
-        email: email,
-        password1: password1,
-        password2: password2
-      })
-      .then(res => {
-        const token = res.data.key;
-        const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-        localStorage.setItem("token", token);
-        localStorage.setItem("expirationDate", expirationDate);
-        dispatch(authSuccess(token));
-        dispatch(checkAuthTimeout(3600));
-      })
-      .catch(err => {
-        dispatch(authFail(err));
-      });
+    await axios.post('https://react-emusic.herokuapp.com/rest-auth/registration/', {
+      username: username,
+      email: email,
+      first_name: firstname,
+      last_name: lastname,
+      password1: password1,
+      password2: password2
+
+    }).then(res => {
+      const token = res.data.key;
+      const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', username);
+      localStorage.setItem('expirationDate', expirationDate);
+      dispatch(authSuccess(token, username));
+      dispatch(checkAuthTimeout(3600));
+
+    }).catch(err => {
+      dispatch(authFail(err, err.response));
+    });
   };
 };
+
+
 
 export const authCheckState = () => {
   return async (dispatch) => {

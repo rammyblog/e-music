@@ -1,33 +1,33 @@
-import React, { useState, Fragment } from "react"
-import Avatar from "@material-ui/core/Avatar"
-import Button from "@material-ui/core/Button"
-import CssBaseline from "@material-ui/core/CssBaseline"
-import TextField from "@material-ui/core/TextField"
-import Link from "@material-ui/core/Link"
-import Grid from "@material-ui/core/Grid"
-import Box from "@material-ui/core/Box"
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
-import Typography from "@material-ui/core/Typography"
-import { makeStyles } from "@material-ui/core/styles"
-import Container from "@material-ui/core/Container"
-import { connect } from "react-redux"
-import * as actions from "../store/actions/auth"
-import { store } from "../index"
-import { ToastContainer, toast } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
-import CircularProgress from "@material-ui/core/CircularProgress"
+import React, { useState, Fragment } from "react";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import { connect } from "react-redux";
+import * as actions from "../store/actions/auth";
+import { store } from "../index";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
       <Link color="inherit" href="">
-        Notemaster
+        E-music
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
-  )
+  );
 }
 
 const useStyles = makeStyles(theme => ({
@@ -48,80 +48,80 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2)
   }
-}))
+}));
 
 function SignUp(props) {
 
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [username, setUsername] = useState("")
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [username, setUsername] = useState("");
 
-  const [password1, setPassword1] = useState("")
-  const [email, setEmail] = useState("")
-  const [password2, setPassword2] = useState("")
+  const [password1, setPassword1] = useState("");
+  const [email, setEmail] = useState("");
+  const [password2, setPassword2] = useState("");
 
-  const [errResponse, setErrResponse] = React.useState()
+  const [errResponse, setErrResponse] = React.useState();
 
-  const [emailError, setEmailError] = useState(false)
-  const [usernameError, setUsernameError] = useState(false)
-  const [passwordError, setPasswordError] = useState(false)
-  const [passwordMatchError, setPasswordMatchError] = useState(false)
+  const [emailError, setEmailError] = useState(false);
+  const [usernameError, setUsernameError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordMatchError, setPasswordMatchError] = useState(false);
 
-  const [active, setActive] = useState(false)
+  const [active, setActive] = useState(false);
 
   function validateEmail(email) {
     // eslint-disable-next-line
-    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    setEmailError(!re.test(String(email).toLowerCase()))
+    setEmailError(!re.test(String(email).toLowerCase()));
   }
 
   const userNameValidator = username => {
     // eslint-disable-next-line
-    let re = /^([a-zA-Z0-9@/./+/-/_]+)$/
+    let re = /^([a-zA-Z0-9@/./+/-/_]+)$/;
     let userNameChecker = re.test(
       String(username)
         .trim()
         .toLowerCase()
-    )
+    );
 
     if (userNameChecker || username.trim() > 150) {
-      setUsernameError(false)
+      setUsernameError(false);
     } else {
-      setUsernameError(false)
+      setUsernameError(false);
     }
-  }
+  };
 
   const passwordValidator = password => {
-    let re = /^([0-9]+)$/
+    let re = /^([0-9]+)$/;
 
-    let passwordChecker = re.test(password)
+    let passwordChecker = re.test(password);
 
     if (passwordChecker || password.length < 8) {
-      setPasswordError(true)
+      setPasswordError(true);
     } else {
-      setPasswordError(false)
+      setPasswordError(false);
     }
-  }
+  };
 
   const passwordMatch = password2 => {
-    let password1Value = { password1 }.password1
+    let password1Value = { password1 }.password1;
     if (password1Value !== password2) {
-      setPasswordMatchError(true)
+      setPasswordMatchError(true);
     } else {
-      setPasswordMatchError(false)
+      setPasswordMatchError(false);
     }
-  }
+  };
 
   const validator = () => {
-    let firstNameValue = { firstName }.firstName
-    let lastNameValue = { lastName }.lastName
-    let usernameValue = { username }.username
-    let password1Value = { password1 }.password1
-    let password2Value = { password2 }.password2
-    let emailValue = { email }.email
+    let firstNameValue = { firstName }.firstName;
+    let lastNameValue = { lastName }.lastName;
+    let usernameValue = { username }.username;
+    let password1Value = { password1 }.password1;
+    let password2Value = { password2 }.password2;
+    let emailValue = { email }.email;
 
     if (
       firstNameValue !== "" &&
@@ -132,20 +132,20 @@ function SignUp(props) {
       emailValue !== "" &&
       emailError === false && usernameError === false && passwordError === false
     ) {
-      return false
+      return false;
     } else {
-      return true
+      return true;
     }
-  }
+  };
 
   async function handleSubmit(e) {
-    e.preventDefault()
-    const email = e.target.email.value
-    const firstName = e.target.firstName.value
-    const lastName = e.target.lastName.value
-    const password1 = e.target.password1.value
-    const password2 = e.target.password2.value
-    const username = e.target.username.value
+    e.preventDefault();
+    const email = e.target.email.value;
+    const firstName = e.target.firstName.value;
+    const lastName = e.target.lastName.value;
+    const password1 = e.target.password1.value;
+    const password2 = e.target.password2.value;
+    const username = e.target.username.value;
     await props.onAuth(
       firstName,
       lastName,
@@ -153,28 +153,32 @@ function SignUp(props) {
       email,
       password1,
       password2
-    )
+    );
 
-    const token = store.getState().auth.token
+    const token = store.getState().auth.token;
+
+    // const token = store.getState().auth.token
+    console.log(store.getState().auth);
+
 
 
 
     if (token) {
-      let welcomeMsg = "Welcome " + username
+      let welcomeMsg = "Welcome " + username;
       toast.success(welcomeMsg, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: false
-      })
+      });
 
       setTimeout(() => {
-        props.history.push("/dashboard/")
-      }, 5000)
+        props.history.push("/dashboard/");
+      }, 5000);
     } else {
-      const response = Object.values(store.getState().auth.error.response.data)
-      setErrResponse(response)
+      const response = Object.values(store.getState().auth.error.response.data);
+      setErrResponse(response);
 
     }
   }
@@ -214,8 +218,8 @@ function SignUp(props) {
                       label="First Name"
                       autoFocus
                       onChange={event => {
-                        setFirstName(event.target.value)
-                        validator()
+                        setFirstName(event.target.value);
+                        validator();
                       }}
                     />
                   </Grid>
@@ -229,8 +233,8 @@ function SignUp(props) {
                       name="lastName"
                       autoComplete="lname"
                       onChange={event => {
-                        setLastName(event.target.value)
-                        validator()
+                        setLastName(event.target.value);
+                        validator();
                       }}
                     />
                   </Grid>
@@ -245,9 +249,9 @@ function SignUp(props) {
                       error={emailError}
                       autoComplete="email"
                       onChange={event => {
-                        setEmail(event.target.value)
-                        validateEmail(event.target.value)
-                        validator()
+                        setEmail(event.target.value);
+                        validateEmail(event.target.value);
+                        validator();
                       }}
                     />
 
@@ -267,9 +271,9 @@ function SignUp(props) {
                       autoComplete="username"
                       error={usernameError}
                       onChange={event => {
-                        setUsername(event.target.value)
-                        userNameValidator(event.target.value)
-                        validator()
+                        setUsername(event.target.value);
+                        userNameValidator(event.target.value);
+                        validator();
                       }}
                     />
 
@@ -293,16 +297,16 @@ function SignUp(props) {
                       autoComplete="current-password"
                       error={passwordError || passwordMatchError}
                       onChange={event => {
-                        setPassword1(event.target.value)
-                        passwordValidator(event.target.value)
+                        setPassword1(event.target.value);
+                        passwordValidator(event.target.value);
 
-                        validator()
+                        validator();
                       }}
                       onFocus={event => {
-                        setActive(true)
+                        setActive(true);
                       }}
                       onBlur={event => {
-                        setActive(false)
+                        setActive(false);
                       }}
                     />
 
@@ -340,9 +344,9 @@ function SignUp(props) {
                       autoComplete="current-password"
                       error={passwordMatchError}
                       onChange={event => {
-                        setPassword2(event.target.value)
-                        passwordMatch(event.target.value)
-                        validator()
+                        setPassword2(event.target.value);
+                        passwordMatch(event.target.value);
+                        validator();
                       }}
                     />
                     {passwordMatchError ? (
@@ -378,7 +382,7 @@ function SignUp(props) {
           props.history.push('/dashboard/')
       }
     </Fragment>
-  )
+  );
 }
 
 const mapStateToProps = state => {
@@ -388,8 +392,8 @@ const mapStateToProps = state => {
     token: state.auth.token,
     response: state.auth.response,
     isAuthenticated: state.auth.token !== null
-  }
-}
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -406,6 +410,6 @@ const mapDispatchToProps = dispatch => {
       ),
     onTryAutoSignup: () => dispatch(actions.authCheckState())
 
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp)
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

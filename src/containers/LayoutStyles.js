@@ -9,8 +9,7 @@ const styles = theme => ({
     },
     title: {
         flexGrow: 1,
-        margin: 10,
-        cursor: 'pointer'
+
     },
     hide: {
         display: 'none',
@@ -54,6 +53,10 @@ const styles = theme => ({
             width: 200,
         },
     },
+    marginCursor: {
+        margin: 10,
+        cursor: 'pointer'
+    }
 
 });
 
