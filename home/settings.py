@@ -23,9 +23,9 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'rest_auth.registration',
-    'widget_tweaks',
-
 ]
+
+
 SITE_ID = 1
 
 MIDDLEWARE = [
@@ -62,11 +62,14 @@ AUTH_PASSWORD_VALIDATORS = [
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'uvuxdjvr',
+        'USER': 'uvuxdjvr',
+        'PASSWORD': 'xHTOxjsjzmwoQu2ntkNUDKJ8HiQc9Vgz',
+        'HOST': 'raja.db.elephantsql.com',
+        'PORT': '5432',
     }
 }
-
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
 )
@@ -118,7 +121,7 @@ REST_FRAMEWORK = {
 ACCOUNT_EMAIL_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-WSGI_APPLICATION = 'home.wsgi.dev.application'
+WSGI_APPLICATION = 'home.wsgi.application'
 CORS_ORIGIN_ALLOW_ALL = True
 
 
