@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'rest_auth.registration',
-    'allauth.socialaccount',
+    'widget_tweaks',
 
 ]
 SITE_ID = 1
